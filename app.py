@@ -116,21 +116,31 @@ status_comboio = st.text_input("Status do Comboio:", value="FORMAÇÃO").upper()
 
 # --- APOIO ---
 st.subheader("🚢 Embarcações de Apoio")
-apoio_lista = ["V. MASUTTI", "J. TRICHES", "TANGARÁ", "JACOB BORGES", "S.PISSOLO", "AMAZON I"]
+apoio_base = ["V. MASUTTI", "J. TRICHES", "TANGARÁ", "JACOB BORGES", "S.PISSOLO", "AMAZON I"]
 
-# Campo dinâmico para adicionar mais embarcações
-novas_embarcacoes = st.text_input("Adicionar outras embarcações (separe por vírgula se for mais de uma):")
+# 1. Campo para adicionar novos barcos
+novas_embarcacoes = st.text_input("Adicionar novas embarcações (separe por vírgula):")
 if novas_embarcacoes:
     extras = [e.strip().upper() for e in novas_embarcacoes.split(",") if e.strip()]
     for extra in extras:
-        if extra not in apoio_lista:
-            apoio_lista.append(extra)
+        if extra not in apoio_base:
+            apoio_base.append(extra)
+
+# 2. Caixa de seleção múltipla (permite remover clicando no 'X')
+embarcacoes_presentes = st.multiselect(
+    "Gerenciar frota do turno (clique no 'X' para remover quem foi embora):",
+    options=apoio_base,
+    default=apoio_base
+)
 
 status_apoio = {}
-cols = st.columns(2)
-for idx, emp in enumerate(apoio_lista):
-    with cols[idx % 2]:
-        status_apoio[emp] = st.checkbox(f"{emp} Operante", value=True, key=f"chk_{emp}")
+if embarcacoes_presentes:
+    cols = st.columns(2)
+    for idx, emp in enumerate(embarcacoes_presentes):
+        with cols[idx % 2]:
+            status_apoio[emp] = st.checkbox(f"{emp} Operante", value=True, key=f"chk_{emp}")
+else:
+    st.warning("⚠️ Nenhuma embarcação de apoio selecionada para este turno.")
 
 assinatura = st.text_input("Sua Assinatura:", value="GUSTAVO RENAN").upper()
 
