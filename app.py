@@ -28,7 +28,7 @@ def formatar_horario(h: str) -> str:
         return f"{digitos[:2]}:{digitos[2:4]} às {digitos[4:6]}:{digitos[6:]}"
     return h
 
-st.title("🦅 Otimizador de Turno - Equipe A")
+st.title("🦅 Relatório de Turno - Equipe A")
 st.write("Preencha os dados abaixo para gerar o relatório formatado.")
 
 # --- DADOS GERAIS ---
